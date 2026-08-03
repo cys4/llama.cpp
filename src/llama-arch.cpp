@@ -78,7 +78,6 @@ static const std::map<llm_arch, const char *> LLM_ARCH_NAMES = {
     { LLM_ARCH_DEEPSEEK2OCR,     "deepseek2-ocr"    },
     { LLM_ARCH_DEEPSEEK32,       "deepseek32"       },
     { LLM_ARCH_DEEPSEEK4,        "deepseek4"        },
-    { LLM_ARCH_AXK2,             "axk2"             },
     { LLM_ARCH_CHATGLM,          "chatglm"          },
     { LLM_ARCH_GLM4,             "glm4"             },
     { LLM_ARCH_GLM4_MOE,         "glm4moe"          },
@@ -145,6 +144,7 @@ static const std::map<llm_arch, const char *> LLM_ARCH_NAMES = {
     { LLM_ARCH_TALKIE,           "talkie"           },
     { LLM_ARCH_MELLUM,           "mellum"           },
     { LLM_ARCH_NANBEIGE,         "nanbeige"         },
+    { LLM_ARCH_AXK2,             "axk2"             },
     { LLM_ARCH_UNKNOWN,          "(unknown)"        },
 };
 
@@ -1024,7 +1024,6 @@ bool llm_arch_supports_sm_tensor(const llm_arch & arch) {
         case LLM_ARCH_DEEPSEEK2:
         case LLM_ARCH_DEEPSEEK32:
         case LLM_ARCH_DEEPSEEK4:
-        case LLM_ARCH_AXK2:
         case LLM_ARCH_GLM_DSA:
         case LLM_ARCH_BITNET:
         case LLM_ARCH_T5:
@@ -1037,6 +1036,7 @@ bool llm_arch_supports_sm_tensor(const llm_arch & arch) {
         case LLM_ARCH_MINIMAX_M3:
         case LLM_ARCH_MISTRAL4:
         case LLM_ARCH_KIMI_LINEAR:
+        case LLM_ARCH_AXK2:
             return false;
         default:
             return true;

@@ -2141,23 +2141,6 @@ llama_memory_i * llama_model::create_memory(const llama_memory_params & params, 
                             nullptr);
                 }
             } break;
-        case LLM_ARCH_AXK2:
-            {
-                res = new llama_kv_cache_dsa(
-                        *this,
-                        params.type_k,
-                        params.type_v,
-                        !cparams.flash_attn,
-                        cparams.offload_kqv,
-                        cparams.kv_unified,
-                        cparams.n_ctx_seq,
-                        cparams.n_seq_max,
-                        1,
-                        hparams.n_swa,
-                        hparams.swa_type,
-                        nullptr,
-                        nullptr);
-            } break;
         case LLM_ARCH_DEEPSEEK4:
             {
                 GGML_ASSERT(hparams.swa_type != LLAMA_SWA_TYPE_NONE);
@@ -2200,6 +2183,23 @@ llama_memory_i * llama_model::create_memory(const llama_memory_params & params, 
                             nullptr,
                             nullptr);
                 }
+            } break;
+        case LLM_ARCH_AXK2:
+            {
+                res = new llama_kv_cache_dsa(
+                        *this,
+                        params.type_k,
+                        params.type_v,
+                        !cparams.flash_attn,
+                        cparams.offload_kqv,
+                        cparams.kv_unified,
+                        cparams.n_ctx_seq,
+                        cparams.n_seq_max,
+                        1,
+                        hparams.n_swa,
+                        hparams.swa_type,
+                        nullptr,
+                        nullptr);
             } break;
         case LLM_ARCH_DFLASH:
             {

@@ -496,15 +496,6 @@ struct llm_tokenizer_bpe : llm_tokenizer {
                     "[!\"#$%&'()*+,\\-./:;<=>?@\\[\\\\\\]^_`{|}~][A-Za-z]+|[^\\r\\n\\p{L}\\p{P}\\p{S}]?[\\p{L}\\p{M}]+| ?[\\p{P}\\p{S}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+",
                 };
                 break;
-            case LLAMA_VOCAB_PRE_TYPE_AXK2:
-                regex_exprs = {
-                    // original regexes from tokenizer.json - runs of CJK/kana are isolated first
-                    // "[\u4e00-\u9fa5\u3040-\u309f\u30a0-\u30ff]+"
-                    // "(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"
-                    "[一-龥぀-ゟ゠-ヿ]+",
-                    "(?:'[sS]|'[tT]|'[rR][eE]|'[vV][eE]|'[mM]|'[lL][lL]|'[dD])|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+",
-                };
-                break;
             case LLAMA_VOCAB_PRE_TYPE_LAGUNA:
                 regex_exprs = {
                     "[^\\n]+|[\\n]+",
@@ -550,6 +541,15 @@ struct llm_tokenizer_bpe : llm_tokenizer {
                     "\\S+",
                 };
                 byte_encode = false;
+                break;
+            case LLAMA_VOCAB_PRE_TYPE_AXK2:
+                regex_exprs = {
+                    // original regexes from tokenizer.json - runs of CJK/kana are isolated first
+                    // "[\u4e00-\u9fa5\u3040-\u309f\u30a0-\u30ff]+"
+                    // "(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"
+                    "[一-龥぀-ゟ゠-ヿ]+",
+                    "(?:'[sS]|'[tT]|'[rR][eE]|'[vV][eE]|'[mM]|'[lL][lL]|'[dD])|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+",
+                };
                 break;
             default:
                 // default regex for BPE tokenization pre-processing
@@ -2365,10 +2365,6 @@ void llama_vocab::impl::load(llama_model_loader & ml, const LLM_KV & kv) {
                 pre_type = LLAMA_VOCAB_PRE_TYPE_LAGUNA;
                 clean_spaces = false;
             } else if (
-                tokenizer_pre == "axk2") {
-                pre_type = LLAMA_VOCAB_PRE_TYPE_AXK2;
-                clean_spaces = false;
-            } else if (
                 tokenizer_pre == "minimax-m2") {
                 pre_type = LLAMA_VOCAB_PRE_TYPE_MINIMAX_M2;
                 clean_spaces = false;
@@ -2379,6 +2375,10 @@ void llama_vocab::impl::load(llama_model_loader & ml, const LLM_KV & kv) {
             } else if (
                 tokenizer_pre == "mellum2") {
                 pre_type = LLAMA_VOCAB_PRE_TYPE_MELLUM2;
+            } else if (
+                tokenizer_pre == "axk2") {
+                pre_type = LLAMA_VOCAB_PRE_TYPE_AXK2;
+                clean_spaces = false;
             } else {
                 throw std::runtime_error(format("unknown pre-tokenizer type: '%s'", tokenizer_pre.c_str()));
             }
